@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+*.db
+*.sqlite
+# keep the bundled demo capture, ignore anything else you capture locally
+*.pcap
+*.pcapng
+!samples/demo_attack.pcap

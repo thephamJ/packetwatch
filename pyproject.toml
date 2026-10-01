@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "packetwatch"
+version = "0.1.0"
+description = "Lightweight network intrusion detection for packet captures and live traffic"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = ["scapy>=2.5.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+packetwatch = "packetwatch.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["packetwatch*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
