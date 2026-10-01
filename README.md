@@ -130,6 +130,15 @@ Regenerate the demo capture with:
 python scripts/generate_sample_pcap.py samples/demo_attack.pcap
 ```
 
+## Validation
+
+- **Unit tests:** 35 automated tests (pytest) cover each detector's positive case, negative cases
+  (slow scans, healthy servers, repeated ports, ARP probes, benign DNS), alert de-duplication,
+  the SQLite layer, and the CLI end to end. They run on every push via GitHub Actions.
+- **Synthetic attack capture:** `samples/demo_attack.pcap` contains 563 packets of normal
+  traffic plus one port scan, SYN flood, ARP spoofing attempt, and DNS tunneling burst.
+  PacketWatch raises exactly four alerts, one per attack, with no alerts on the normal traffic.
+
 ## Limitations
 
 This is a learning project, not a replacement for Snort, Suricata, or Zeek.
