@@ -139,6 +139,29 @@ python scripts/generate_sample_pcap.py samples/demo_attack.pcap
   traffic plus one port scan, SYN flood, ARP spoofing attempt, and DNS tunneling burst.
   PacketWatch raises exactly four alerts, one per attack, with no alerts on the normal traffic.
 
+  The detection rules were validated in an isolated VirtualBox host-only testbed (`192.168.56.0/24`) using live traffic generated between an attacker VM and a monitored server.
+
+### Environment Topology
+* **Attacker**: Kali Linux (`192.168.56.102`)
+* **Target / Sensor**: Ubuntu Server (`192.168.56.101`) running Apache (`:80`), OpenSSH (`:22`), and `tcpdump`
+* **Analysis Engine**: PacketWatch on Host (Python 3, Scapy, SQLite)
+
+### Attack Scenarios Tested
+1. **TCP SYN Port Sweep**: Generated via `nmap -sS -p 1-1000 192.168.56.101`. PacketWatch identified and isolated the horizontal probe based on the destination port threshold.
+2. **SYN Flood (DoS)**: Simulated using `hping3 -S -p 80 -i u1000 -c 500 192.168.56.101`. Flagged by calculating the anomalous ratio of unacknowledged `SYN` flags relative to completed handshakes.
+3. **ARP Cache Poisoning**: Executed using `arpspoof -i eth1 -t 192.168.56.101 192.168.56.1`. Flagged high-severity alerts upon detecting conflicting MAC bindings for an existing IP in the ARP table.
+
+### Example CLI Output
+```text
+[*] Parsing capture: data/lab_attacks.pcap...
+
+=======================================================
+Source IP          | Attack       | Severity | Count
+=======================================================
+192.168.56.1       | ARP_SPOOF    | HIGH     | 5
+192.168.56.102     | PORT_SCAN    | MEDIUM   | 1
+=======================================================
+
 ## Limitations
 
 This is a learning project, not a replacement for Snort, Suricata, or Zeek.
