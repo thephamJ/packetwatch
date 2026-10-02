@@ -12,3 +12,8 @@ dist/
 *.pcap
 *.pcapng
 !samples/demo_attack.pcap
+
+alerts.db
+*.sqlite3
+data/*.pcap
+
